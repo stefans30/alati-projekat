@@ -1,13 +1,8 @@
 package com.stefansamardzija.alati_projekat.controller;
 
-import com.stefansamardzija.alati_projekat.dto.FizickoLiceDTO;
-import com.stefansamardzija.alati_projekat.dto.PravnoLiceDTO;
-import com.stefansamardzija.alati_projekat.model.FizickoLice;
-import com.stefansamardzija.alati_projekat.model.Kupac;
-import com.stefansamardzija.alati_projekat.model.PravnoLice;
-import com.stefansamardzija.alati_projekat.service.KupacService;
-import org.springframework.http.ResponseEntity;
+import com.stefansamardzija.alati_projekat.service.KupacServis;
 import org.springframework.web.bind.annotation.*;
+import com.stefansamardzija.alati_projekat.entity.Kupac;
 
 import java.util.List;
 
@@ -15,39 +10,44 @@ import java.util.List;
 @RequestMapping("/api/kupci")
 public class KupacController {
 
-    private final KupacService kupacService;
+    private final KupacServis kupacServis;
 
-    public KupacController(KupacService kupacService) {
-        this.kupacService = kupacService;
+    public KupacController(KupacServis kupacServis) {
+        this.kupacServis = kupacServis;
     }
 
-    @GetMapping
-    public List<Kupac> sviKupci() {
-        return kupacService.sviKupci();
+    @PostMapping
+    public Kupac kreiraj(@RequestBody Kupac kupac) {
+        return kupacServis.kreirajKupca(kupac);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Kupac> pronadjiPoId(@PathVariable Long id) {
-        return ResponseEntity.ok(kupacService.pronadjiPoId(id));
-    }
-
-    @PostMapping("/fizicko-lice")
-    public ResponseEntity<FizickoLice> registrujFizickoLice(@RequestBody FizickoLiceDTO dto) {
-        FizickoLice kreiran = kupacService.registrujFizickoLice(
-                dto.mejl(), dto.idMesta(), dto.ime(), dto.prezime(), dto.jmbg());
-        return ResponseEntity.ok(kreiran);
-    }
-
-    @PostMapping("/pravno-lice")
-    public ResponseEntity<PravnoLice> registrujPravnoLice(@RequestBody PravnoLiceDTO dto) {
-        PravnoLice kreiran = kupacService.registrujPravnoLice(
-                dto.mejl(), dto.idMesta(), dto.nazivFirme(), dto.pib());
-        return ResponseEntity.ok(kreiran);
+    @PutMapping("/{id}")
+    public Kupac izmeni(@PathVariable Long id, @RequestBody Kupac kupac) {
+        return kupacServis.izmeniKupca(id, kupac);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> obrisi(@PathVariable Long id) {
-        kupacService.obrisi(id);
-        return ResponseEntity.noContent().build();
+    public void obrisi(@PathVariable Long id) {
+        kupacServis.obrisiKupca(id);
+    }
+
+    @GetMapping
+    public List<Kupac> pretrazi() {
+        return kupacServis.pretraziKupce();
+    }
+
+    @GetMapping("/{id}")
+    public Kupac vrati(@PathVariable Long id) {
+        return kupacServis.vratiKupca(id);
+    }
+
+    @GetMapping("/po-mestu/{idMesto}")
+    public List<Kupac> poMestu(@PathVariable Long idMesto) {
+        return kupacServis.kupciPoMestu(idMesto);
+    }
+
+    @GetMapping("/po-tipu")
+    public List<Kupac> poTipu(@RequestParam String tip) {
+        return kupacServis.kupciPoTipu(tip);
     }
 }

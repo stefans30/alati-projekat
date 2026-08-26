@@ -1,45 +1,49 @@
 package com.stefansamardzija.alati_projekat.controller;
 
-import com.stefansamardzija.alati_projekat.model.Telefon;
-import com.stefansamardzija.alati_projekat.service.TelefonService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.stefansamardzija.alati_projekat.entity.Telefon;
+import com.stefansamardzija.alati_projekat.service.TelefonServis;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/telefoni")
 public class TelefonController {
 
-    private final TelefonService telefonService;
+    private final TelefonServis telefonServis;
 
-    public TelefonController(TelefonService telefonService) {
-        this.telefonService = telefonService;
-    }
-
-    @GetMapping
-    public List<Telefon> sviTelefoni() {
-        return telefonService.sviTelefoni();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Telefon> pronadjiPoId(@PathVariable Long id) {
-        return ResponseEntity.ok(telefonService.pronadjiPoId(id));
+    public TelefonController(TelefonServis telefonServis) {
+        this.telefonServis = telefonServis;
     }
 
     @PostMapping
-    public ResponseEntity<Telefon> dodaj(@RequestBody Telefon telefon) {
-        return ResponseEntity.ok(telefonService.dodaj(telefon));
+    public Telefon kreiraj(@RequestBody Telefon telefon) {
+        return telefonServis.kreirajTelefon(telefon);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Telefon> izmeni(@PathVariable Long id, @RequestBody Telefon telefon) {
-        return ResponseEntity.ok(telefonService.izmeni(id, telefon));
+    public Telefon izmeni(@PathVariable Long id, @RequestBody Telefon telefon) {
+        return telefonServis.izmeniTelefon(id, telefon);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> obrisi(@PathVariable Long id) {
-        telefonService.obrisi(id);
-        return ResponseEntity.noContent().build();
+    public void obrisi(@PathVariable Long id) {
+        telefonServis.obrisiTelefon(id);
+    }
+
+    @GetMapping
+    public List<Telefon> pretrazi(@RequestParam(required = false) String naziv) {
+        return telefonServis.pretraziTelefone(naziv);
+    }
+
+    @GetMapping("/{id}")
+    public Telefon vrati(@PathVariable Long id) {
+        return telefonServis.vratiTelefon(id);
+    }
+
+    @GetMapping("/po-ceni")
+    public List<Telefon> poRasponuCene(@RequestParam BigDecimal min, @RequestParam BigDecimal max) {
+        return telefonServis.telefoniPoRasponuCene(min, max);
     }
 }
