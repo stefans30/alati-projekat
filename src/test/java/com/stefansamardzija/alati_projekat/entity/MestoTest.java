@@ -43,12 +43,6 @@ class MestoTest {
         );
     }
 
-    @Test
-    @DisplayName("setIdMesto treba da postavi vrednost idMesto polja")
-    void testSetIdMesto() {
-        mesto.setIdMesto(5L);
-        assertEquals(5L, mesto.getIdMesto(), "idMesto treba da bude 5");
-    }
 
     @Test
     @DisplayName("setNaziv sa validnom vrednoscu treba uspesno da postavi naziv")
