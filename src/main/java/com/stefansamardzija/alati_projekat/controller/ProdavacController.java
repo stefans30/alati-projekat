@@ -1,9 +1,11 @@
 package com.stefansamardzija.alati_projekat.controller;
 
-import com.stefansamardzija.alati_projekat.model.Prodavac;
-import com.stefansamardzija.alati_projekat.service.ProdavacService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.stefansamardzija.alati_projekat.dto.DodeliSertifikatZahtev;
+import com.stefansamardzija.alati_projekat.dto.PrijavaZahtev;
+import com.stefansamardzija.alati_projekat.entity.Prodavac;
+import com.stefansamardzija.alati_projekat.entity.ProdavacSertifikat;
+import com.stefansamardzija.alati_projekat.service.ProdavacServis;
 
 import java.util.List;
 
@@ -11,35 +13,29 @@ import java.util.List;
 @RequestMapping("/api/prodavci")
 public class ProdavacController {
 
-    private final ProdavacService prodavacService;
+    private final ProdavacServis prodavacServis;
 
-    public ProdavacController(ProdavacService prodavacService) {
-        this.prodavacService = prodavacService;
+    public ProdavacController(ProdavacServis prodavacServis) {
+        this.prodavacServis = prodavacServis;
     }
 
-    @GetMapping
-    public List<Prodavac> sviProdavci() {
-        return prodavacService.sviProdavci();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Prodavac> pronadjiPoId(@PathVariable Long id) {
-        return ResponseEntity.ok(prodavacService.pronadjiPoId(id));
+    @PostMapping("/prijava")
+    public Prodavac prijava(@RequestBody PrijavaZahtev zahtev) {
+        return prodavacServis.prijaviProdavca(zahtev.korisnickoIme(), zahtev.sifra());
     }
 
     @PostMapping
-    public ResponseEntity<Prodavac> dodaj(@RequestBody Prodavac prodavac) {
-        return ResponseEntity.ok(prodavacService.dodaj(prodavac));
+    public Prodavac kreiraj(@RequestBody Prodavac prodavac) {
+        return prodavacServis.sacuvajProdavca(prodavac);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Prodavac> izmeni(@PathVariable Long id, @RequestBody Prodavac prodavac) {
-        return ResponseEntity.ok(prodavacService.izmeni(id, prodavac));
+    @GetMapping
+    public List<Prodavac> pretrazi(@RequestParam(required = false) String pretraga) {
+        return prodavacServis.pretraziProdavce(pretraga);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> obrisi(@PathVariable Long id) {
-        prodavacService.obrisi(id);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/{id}/sertifikati")
+    public ProdavacSertifikat dodeliSertifikat(@PathVariable Long id, @RequestBody DodeliSertifikatZahtev zahtev) {
+        return prodavacServis.dodeliSertifikat(id, zahtev);
     }
 }

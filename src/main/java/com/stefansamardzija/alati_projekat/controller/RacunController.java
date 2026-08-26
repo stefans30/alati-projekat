@@ -1,52 +1,44 @@
 package com.stefansamardzija.alati_projekat.controller;
 
-import com.stefansamardzija.alati_projekat.model.Racun;
-import com.stefansamardzija.alati_projekat.service.RacunService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.stefansamardzija.alati_projekat.dto.KreirajRacunZahtev;
+import com.stefansamardzija.alati_projekat.entity.Racun;
+import com.stefansamardzija.alati_projekat.service.RacunServis;
 
 import java.util.List;
 
-/**
- * REST kontroler za operacije nad računima.
- */
 @RestController
 @RequestMapping("/api/racuni")
 public class RacunController {
 
-    private final RacunService racunService;
+    private final RacunServis racunServis;
 
-    public RacunController(RacunService racunService) {
-        this.racunService = racunService;
+    public RacunController(RacunServis racunServis) {
+        this.racunServis = racunServis;
+    }
+
+    @PostMapping
+    public Racun kreiraj(@RequestBody KreirajRacunZahtev zahtev) {
+        return racunServis.kreirajRacun(zahtev);
     }
 
     @GetMapping
-    public List<Racun> sviRacuni() {
-        return racunService.sviRacuni();
+    public List<Racun> pretrazi() {
+        return racunServis.pretraziRacune();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Racun> pronadjiPoId(@PathVariable Long id) {
-        return ResponseEntity.ok(racunService.pronadjiPoId(id));
+    public Racun vrati(@PathVariable Long id) {
+        return racunServis.vratiRacun(id);
     }
 
-    @PostMapping("/zakljuci")
-    public ResponseEntity<Racun> zakljuciRacun(
-            @RequestParam Long idProdavac, @RequestParam Long idKupac) {
-        return ResponseEntity.ok(racunService.zakljuciRacun(idProdavac, idKupac));
+    @GetMapping("/po-prodavcu/{idProdavac}")
+    public List<Racun> poProdavcu(@PathVariable Long idProdavac) {
+        return racunServis.racuniZaProdavca(idProdavac);
     }
 
-    @PostMapping("/{idRacun}/stavke")
-    public ResponseEntity<Racun> dodajStavku(
-            @PathVariable Long idRacun,
-            @RequestParam Long idTelefon,
-            @RequestParam int kolicina) {
-        return ResponseEntity.ok(racunService.dodajStavku(idRacun, idTelefon, kolicina));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> obrisi(@PathVariable Long id) {
-        racunService.obrisi(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/po-kupcu/{idKupac}")
+    public List<Racun> poKupcu(@PathVariable Long idKupac) {
+        return racunServis.racuniZaKupca(idKupac);
     }
 }
