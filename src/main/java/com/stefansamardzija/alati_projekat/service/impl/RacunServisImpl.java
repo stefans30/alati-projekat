@@ -17,14 +17,34 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Implementira RacunServis koristeci RacunRepository za pristup podacima
+ * o racunima, kao i ProdavacRepository, KupacRepository i TelefonRepository
+ * za proveru i ucitavanje podataka potrebnih za kreiranje racuna.
+ *
+ * @author Stefan Samardzija
+ * @version 1.0
+ */
 @Service
 public class RacunServisImpl implements RacunServis {
 
+    /** Repozitorijum za pristup podacima o racunima. */
     private final RacunRepository racunRepository;
+    /** Repozitorijum za pristup podacima o prodavcima. */
     private final ProdavacRepository prodavacRepository;
+    /** Repozitorijum za pristup podacima o kupcima. */
     private final KupacRepository kupacRepository;
+    /** Repozitorijum za pristup podacima o telefonima. */
     private final TelefonRepository telefonRepository;
 
+    /**
+     * Kreira novu instancu servisa sa zadatim repozitorijumima.
+     *
+     * @param racunRepository Repozitorijum za pristup podacima o racunima.
+     * @param prodavacRepository Repozitorijum za pristup podacima o prodavcima.
+     * @param kupacRepository Repozitorijum za pristup podacima o kupcima.
+     * @param telefonRepository Repozitorijum za pristup podacima o telefonima.
+     */
     public RacunServisImpl(RacunRepository racunRepository, ProdavacRepository prodavacRepository,
                            KupacRepository kupacRepository, TelefonRepository telefonRepository) {
         this.racunRepository = racunRepository;

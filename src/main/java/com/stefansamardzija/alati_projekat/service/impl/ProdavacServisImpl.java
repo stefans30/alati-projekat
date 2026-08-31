@@ -14,13 +14,32 @@ import com.stefansamardzija.alati_projekat.service.ProdavacServis;
 
 import java.util.List;
 
+/**
+ * Implementira ProdavacServis koristeci ProdavacRepository za pristup
+ * podacima o prodavcima, SertifikatRepository za pristup podacima o
+ * sertifikatima i ProdavacSertifikatRepository za pristup podacima o
+ * dodeljenim sertifikatima.
+ *
+ * @author Stefan Samardzija
+ * @version 1.0
+ */
 @Service
 public class ProdavacServisImpl implements ProdavacServis {
 
+    /** Repozitorijum za pristup podacima o prodavcima. */
     private final ProdavacRepository prodavacRepository;
+    /** Repozitorijum za pristup podacima o sertifikatima. */
     private final SertifikatRepository sertifikatRepository;
+    /** Repozitorijum za pristup podacima o dodeljenim sertifikatima. */
     private final ProdavacSertifikatRepository prodavacSertifikatRepository;
 
+    /**
+     * Kreira novu instancu servisa sa zadatim repozitorijumima.
+     *
+     * @param prodavacRepository Repozitorijum za pristup podacima o prodavcima.
+     * @param sertifikatRepository Repozitorijum za pristup podacima o sertifikatima.
+     * @param prodavacSertifikatRepository Repozitorijum za pristup podacima o dodeljenim sertifikatima.
+     */
     public ProdavacServisImpl(ProdavacRepository prodavacRepository,
                               SertifikatRepository sertifikatRepository,
                               ProdavacSertifikatRepository prodavacSertifikatRepository) {

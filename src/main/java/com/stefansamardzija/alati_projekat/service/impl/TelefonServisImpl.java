@@ -9,12 +9,24 @@ import com.stefansamardzija.alati_projekat.service.TelefonServis;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+/**
+ * Implementira TelefonServis koristeci TelefonRepository za pristup
+ * podacima o telefonima.
+ *
+ * @author Stefan Samardzija
+ * @version 1.0
+ */
 @Service
 public class TelefonServisImpl implements TelefonServis {
 
+    /** Repozitorijum za pristup podacima o telefonima. */
     private final TelefonRepository telefonRepository;
 
+    /**
+     * Kreira novu instancu servisa sa zadatim repozitorijumom.
+     *
+     * @param telefonRepository Repozitorijum za pristup podacima o telefonima.
+     */
     public TelefonServisImpl(TelefonRepository telefonRepository) {
         this.telefonRepository = telefonRepository;
     }

@@ -9,12 +9,28 @@ import com.stefansamardzija.alati_projekat.service.SifarnikServis;
 
 import java.util.List;
 
+/**
+ * Implementira SifarnikServis koristeci MestoRepository za pristup
+ * podacima o mestima i SertifikatRepository za pristup podacima o
+ * sertifikatima.
+ *
+ * @author Stefan Samardzija
+ * @version 1.0
+ */
 @Service
 public class SifarnikServisImpl implements SifarnikServis {
 
+    /** Repozitorijum za pristup podacima o mestima. */
     private final MestoRepository mestoRepository;
+    /** Repozitorijum za pristup podacima o sertifikatima. */
     private final SertifikatRepository sertifikatRepository;
 
+    /**
+     * Kreira novu instancu servisa sa zadatim repozitorijumima.
+     *
+     * @param mestoRepository Repozitorijum za pristup podacima o mestima.
+     * @param sertifikatRepository Repozitorijum za pristup podacima o sertifikatima.
+     */
     public SifarnikServisImpl(MestoRepository mestoRepository, SertifikatRepository sertifikatRepository) {
         this.mestoRepository = mestoRepository;
         this.sertifikatRepository = sertifikatRepository;
